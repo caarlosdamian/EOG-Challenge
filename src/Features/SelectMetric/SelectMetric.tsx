@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1),
       minWidth: 120,
     },
+    container: {
+     marginLeft:"600px",
+     padding: "10px",
+    },
   }),
 );
 const query = gql`
@@ -43,7 +47,7 @@ export const SelectMetric: React.FC<Props> = ({ setGlobalMetric, globalMetric })
     setGlobalMetric(event.target.value as string);
   };
   return (
-    <Container>
+    <Container className={classes.container}>
       <FormControl className={classes.formControl}>
         <InputLabel id="demo-simple-select-label">Metric</InputLabel>
         <Select
