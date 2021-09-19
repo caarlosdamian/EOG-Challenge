@@ -1,13 +1,13 @@
 module.exports = {
   env: {
-    browser: true,
-    es6: true,
-    commonjs: true,
-    es6: true,
-    node: true,
+    browser: false,
+    es6: false,
+    commonjs: false,
+    es6: false,
+    node: false,
   },
   parser: '@typescript-eslint/parser', // Specifies the ESLint parser
-  extends: ['airbnb-typescript'],
+  extends: ['airbnb-typescript','prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
