@@ -1,5 +1,5 @@
 import React from 'react';
-import { LinearProgress, Typography } from '@material-ui/core';
+import { Box, LinearProgress, Typography } from '@material-ui/core';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, XAxis, Tooltip } from 'recharts';
 import { useQuery, gql } from '@apollo/client';
 import { useSelector } from 'react-redux';
@@ -21,7 +21,8 @@ type Props = {
 interface RootState {
   metric: Props;
 }
-const Chart: React.FC= () => {
+
+const Chart: React.FC = () => {
   const classes = useStyles();
   const globalMetric = useSelector((state: RootState) => state.metric.globalMetric);
   const { loading, error, data } = useQuery(query, {
@@ -30,12 +31,30 @@ const Chart: React.FC= () => {
     },
   });
   const infoData = data?.getMeasurements;
+  const lastMesurment = infoData ? infoData[infoData?.length - 1]?.value : '';
 
   if (loading) return <LinearProgress />;
   if (error) return <Typography>{error}</Typography>;
   return (
     <div className={classes.container}>
-      <h3 className={classes.chartTitle}>{globalMetric.toUpperCase()}</h3>
+      {globalMetric ? (
+        <Box
+          className={classes.headers}
+          sx={{
+            boxShadow: 3,
+            bgcolor: 'white',
+            m: 1,
+            p: 1,
+            width: '20rem',
+            height: '10rem',
+          }}
+        >
+          <h3 className={classes.chartTitle}>{globalMetric.toUpperCase()}</h3>
+          <h4 className={classes.messurment}>{lastMesurment}</h4>
+        </Box>
+      ) : (
+        <></>
+      )}
       <ResponsiveContainer width="100%" aspect={4 / 1}>
         <LineChart data={infoData}>
           <XAxis dataKey="at" stroke="#5550bd" />
