@@ -1,30 +1,8 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
-import {
-  createStyles,
-  Container,
-  FormControl,
-  InputLabel,
-  LinearProgress,
-  makeStyles,
-  MenuItem,
-  Select,
-  Theme,
-  Typography,
-} from '@material-ui/core';
+import { Container, FormControl, InputLabel, LinearProgress, MenuItem, Select, Typography } from '@material-ui/core';
+import { useStyles } from './SelectMetric.css';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-    container: {
-     marginLeft:"600px",
-     padding: "10px",
-    },
-  }),
-);
 const query = gql`
   query {
     getMetrics

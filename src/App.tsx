@@ -5,7 +5,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Wrapper from './components/Wrapper';
-import {SelectMetric} from './Features/SelectMetric/SelectMetric';
+import { SelectMetric } from './Features/SelectMetric/SelectMetric';
+import Chart from './Features/Chart/Chart';
 
 const theme = createTheme({
   palette: {
@@ -29,6 +30,7 @@ const App = () => {
       <Wrapper>
         <Header />
         <SelectMetric setGlobalMetric={setGlobalMetric} globalMetric={globalMetric} />
+        <Chart globalMetric={globalMetric} />
         <ToastContainer />
       </Wrapper>
     </MuiThemeProvider>
