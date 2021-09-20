@@ -33,6 +33,10 @@ const Chart: React.FC = () => {
   });
   const slicehaf = Math.round(data?.getMeasurements.length - 500);
   const infoData = data?.getMeasurements.slice(slicehaf, -1);
+  const datesInfo = infoData?.map((item: any) => ({
+    value: item.value,
+    at: new Date(item.at).toLocaleTimeString('en-US'),
+  }));
   const lastMesurment = infoData ? infoData[infoData?.length - 1]?.value : '';
   if (loading) return <LinearProgress />;
   if (error) return <Typography>{error}</Typography>;
@@ -57,7 +61,7 @@ const Chart: React.FC = () => {
         <></>
       )}
       <ResponsiveContainer width="100%" aspect={4 / 1}>
-        <LineChart data={infoData}>
+        <LineChart data={datesInfo}>
           <XAxis dataKey="at" stroke="#5550bd" />
           <YAxis dataKey="value" stroke="#5550bd" />
           <Line activeDot={{ r: 8 }} type="monotone" dataKey="value" stroke="#5550bd" />
