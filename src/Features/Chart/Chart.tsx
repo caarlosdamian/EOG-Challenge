@@ -29,10 +29,11 @@ const Chart: React.FC = () => {
     variables: {
       globalMetric,
     },
+    pollInterval: 1300,
   });
+
   const infoData = data?.getMeasurements;
   const lastMesurment = infoData ? infoData[infoData?.length - 1]?.value : '';
-
   if (loading) return <LinearProgress />;
   if (error) return <Typography>{error}</Typography>;
   return (
