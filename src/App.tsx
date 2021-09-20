@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -22,19 +22,16 @@ const theme = createTheme({
   },
 });
 
-const App = () => {
-  const [globalMetric, setGlobalMetric] = useState('');
-  return (
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <Wrapper>
-        <Header />
-        <SelectMetric setGlobalMetric={setGlobalMetric} globalMetric={globalMetric} />
-        <Chart globalMetric={globalMetric} />
-        <ToastContainer />
-      </Wrapper>
-    </MuiThemeProvider>
-  );
-};
+const App = () => (
+  <MuiThemeProvider theme={theme}>
+    <CssBaseline />
+    <Wrapper>
+      <Header />
+      <SelectMetric />
+      <Chart />
+      <ToastContainer />
+    </Wrapper>
+  </MuiThemeProvider>
+);
 
 export default App;

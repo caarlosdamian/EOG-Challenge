@@ -2,6 +2,7 @@ import React from 'react';
 import { LinearProgress, Typography } from '@material-ui/core';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, XAxis, Tooltip } from 'recharts';
 import { useQuery, gql } from '@apollo/client';
+import { useSelector } from 'react-redux';
 import { useStyles } from './Chart.css';
 
 const query = gql`
@@ -14,12 +15,15 @@ const query = gql`
     }
   }
 `;
-interface Props {
+type Props = {
   globalMetric: string;
+};
+interface RootState {
+  metric: Props;
 }
-const Chart: React.FC<Props> = ({ globalMetric }) => {
+const Chart: React.FC= () => {
   const classes = useStyles();
-
+  const globalMetric = useSelector((state: RootState) => state.metric.globalMetric);
   const { loading, error, data } = useQuery(query, {
     variables: {
       globalMetric,

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { Container, FormControl, InputLabel, LinearProgress, MenuItem, Select, Typography } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { setMetric } from '../../redux/metric/metricSlice';
 import { useStyles } from './SelectMetric.css';
 
 const query = gql`
@@ -8,11 +10,9 @@ const query = gql`
     getMetrics
   }
 `;
-interface Props {
-  setGlobalMetric: (val: string) => void;
-  globalMetric: string;
-}
-export const SelectMetric: React.FC<Props> = ({ setGlobalMetric, globalMetric }) => {
+
+export const SelectMetric: React.FC = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const { loading, error, data } = useQuery(query);
   if (loading) {
@@ -22,7 +22,7 @@ export const SelectMetric: React.FC<Props> = ({ setGlobalMetric, globalMetric })
     <Typography>{error}</Typography>;
   }
   const handlechange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setGlobalMetric(event.target.value as string);
+    dispatch(setMetric(event.target.value as string));
   };
   return (
     <Container className={classes.container}>
@@ -31,10 +31,13 @@ export const SelectMetric: React.FC<Props> = ({ setGlobalMetric, globalMetric })
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={globalMetric}
           label="Metric"
+          value=""
           onChange={handlechange}
         >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
           {data.getMetrics.map((metric: string) => (
             <MenuItem key={metric} value={metric}>
               {metric}
