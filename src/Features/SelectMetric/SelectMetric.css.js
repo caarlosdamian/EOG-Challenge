@@ -5,9 +5,9 @@ export const useStyles = makeStyles(() =>
     formControl: {
       minWidth: 120,
     },
-    container: {
-      marginLeft: '600px',
-      padding: '10px',
+    grid: {
+      marginTop: '10px',
+      marginLeft: '10px',
     },
   }),
 );
