@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
-import { Container, FormControl, InputLabel, LinearProgress, MenuItem, Select, Typography } from '@material-ui/core';
+import { FormControl, Grid, InputLabel, LinearProgress, MenuItem, Select, Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { setMetric } from '../../redux/metric/metricSlice';
 import { useStyles } from './SelectMetric.css';
@@ -25,26 +25,28 @@ export const SelectMetric: React.FC = () => {
     dispatch(setMetric(event.target.value as string));
   };
   return (
-    <Container className={classes.container}>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Metric</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          label="Metric"
-          value=""
-          onChange={handlechange}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          {data.getMetrics.map((metric: string) => (
-            <MenuItem key={metric} value={metric}>
-              {metric}
+    <Grid container spacing={3} className={classes.grid}>
+      <Grid item lg={4} xs={12}>
+        <FormControl className={classes.formControl}>
+          <InputLabel id="demo-simple-select-label">Metric</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Metric"
+            value=""
+            onChange={handlechange}
+          >
+            <MenuItem value="">
+              <em>None</em>
             </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Container>
+            {data.getMetrics.map((metric: string) => (
+              <MenuItem key={metric} value={metric}>
+                {metric}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+    </Grid>
   );
 };
