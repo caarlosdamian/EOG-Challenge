@@ -24,11 +24,6 @@ const GET_MULTIPLE_MEASURMENTS = gql`
     }
   }
 `;
-
-// const input = [
-//   { metricName: 'injValveOpen', after: '1632329631' },
-//   { metricName: 'oilTemp', after: '1632329631' },
-// ];
 type Props = {
   globalMetricsSelected: string[];
 };
@@ -40,7 +35,7 @@ const Chart: React.FC = () => {
   const globalMetrics = useSelector((state: RootState) => state.metric.globalMetricsSelected);
   const result = useQuery(GET_HEARTBEAT, { pollInterval: 1800000 });
   const heart = result?.data?.heartBeat - 1800000;
-  const colors = ['#A0E7E5', '#000C66', '#B99095', '#3D5B59', '#B68D40', '#868B8E'];
+  const colors = ['#1b615f', '#000C66', '#f14155', '#197a74', '#B68D40', '#868B8E'];
 
   const input = [{}];
   globalMetrics?.forEach((item) => {
@@ -52,20 +47,18 @@ const Chart: React.FC = () => {
     variables: { input },
     pollInterval: 2000,
   });
-
   const infoTrimp = data?.data?.map((item: any) => item?.measurements);
   const newData = infoTrimp?.map((item: any) => {
-    const slicehaf = Math.round(item?.length - 500);
+    const slicehaf = Math.round(item?.length - 10000);
     const infoData = item?.slice(slicehaf, -1);
     const datesInfo = infoData.map((items: any) => ({
       value: items.value,
-      at: new Date(items.at).toLocaleTimeString('en-US'),
+      at: new Date(Math.floor(items.at)).toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit' }),
     }));
     return datesInfo;
   });
 
   const lastMeasurment = newData?.map((element: any) => element[element.length - 1]);
-  // console.log(lastMeasurment[0].value);
   if (loading) return <LinearProgress />;
   if (error) return <Typography>{error}</Typography>;
 
@@ -93,22 +86,25 @@ const Chart: React.FC = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <ResponsiveContainer width="100%" aspect={3 / 1} className={classes.chart}>
-          <LineChart>
-            <XAxis dataKey="at" />
-
+        <ResponsiveContainer width="50%" aspect={2 / 1} className={classes.chart}>
+          <LineChart width={500} height={300}>
             {newData?.map((item: any, index: any) => (
-              <Line
-                key={colors[index]}
-                activeDot={{ r: 8 }}
-                data={item}
-                type="monotone"
-                dataKey="value"
-                stroke={colors[index]}
-              />
+              <>
+                <Line
+                  key={colors[index]}
+                  activeDot={{ r: 8 }}
+                  data={item}
+                  type="monotone"
+                  dataKey="value"
+                  stroke={colors[index]}
+                  yAxisId={index}
+                />
+
+                <YAxis yAxisId={index} domain={[Math.min(item.value), Math.max(item.value)]} />
+              </>
             ))}
             <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />
-            <YAxis dataKey="value" />
+            <XAxis dataKey="at" />
             <Tooltip />
           </LineChart>
         </ResponsiveContainer>
