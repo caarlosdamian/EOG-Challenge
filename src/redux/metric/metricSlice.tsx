@@ -1,23 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface UserInterface {
-  globalMetric: string;
+  globalMetric: string[];
+  globalMetricsSelected: string[];
 }
 
 const initialState: UserInterface = {
-  globalMetric: '',
+  globalMetric: [''],
+  globalMetricsSelected: [],
 };
 
 export const metricslice = createSlice({
   name: 'metric',
   initialState,
   reducers: {
-    setMetric(state, action) {
+    setMetric(state, action: PayloadAction<string[]>) {
       state.globalMetric = action.payload;
+    },
+    setUpdate: (state, action: PayloadAction<string[]>) => {
+      state.globalMetricsSelected = action.payload;
     },
   },
 });
 
-export const { setMetric } = metricslice.actions;
+export const { setMetric, setUpdate } = metricslice.actions;
 
 export default metricslice.reducer;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { FormControl, Grid, InputLabel, LinearProgress, MenuItem, Select, Typography } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-import { setMetric } from '../../redux/metric/metricSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMetric, setUpdate } from '../../redux/metric/metricSlice';
 import { useStyles } from './SelectMetric.css';
 
 const query = gql`
@@ -10,9 +10,17 @@ const query = gql`
     getMetrics
   }
 `;
+type Props = {
+  globalMetricsSelected: string[];
+};
+interface RootState {
+  metric: Props;
+}
 
 export const SelectMetric: React.FC = () => {
+  // const [metrics, setMetrics] = useState<string[]>([]);
   const dispatch = useDispatch();
+  const metrics = useSelector((state: RootState) => state.metric.globalMetricsSelected);
   const classes = useStyles();
   const { loading, error, data } = useQuery(query);
   if (loading) {
@@ -21,19 +29,24 @@ export const SelectMetric: React.FC = () => {
   if (error) {
     <Typography>{error}</Typography>;
   }
-  const handlechange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    dispatch(setMetric(event.target.value as string));
+  dispatch(setMetric(data.getMetrics as string[]));
+  const handlechange = (event: React.ChangeEvent<{ value: string[] | unknown }>) => {
+    // setMetrics(event.target.value as string[]);
+    dispatch(setUpdate(event.target.value as string[]));
   };
+
   return (
     <Grid container spacing={3} className={classes.grid}>
       <Grid item lg={4} xs={12}>
         <FormControl className={classes.formControl}>
-          <InputLabel id="demo-simple-select-label">Metric</InputLabel>
+          <InputLabel id="demo-mutiple-checkbox-label">Metric</InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
+            labelId="demo-mutiple-checkbox-label"
+            id="demo-mutiple-checkbox"
             label="Metric"
-            value=""
+            value={metrics}
+            multiple
+            renderValue={(selected) => (selected as string[]).join(', ')}
             onChange={handlechange}
           >
             <MenuItem value="">
